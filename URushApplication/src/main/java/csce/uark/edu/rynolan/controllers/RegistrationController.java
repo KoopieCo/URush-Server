@@ -17,7 +17,7 @@ import csce.uark.edu.rynolan.models.Rushee;
 @RestController
 public class RegistrationController {
 	
-	@RequestMapping(value = "\registration", method = RequestMethod.POST)
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public boolean registerRushee(@RequestParam(name = "info", required=true) Rushee rushee) {
 		try {
 			JdbcConfiguration config = new JdbcConfiguration();

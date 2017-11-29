@@ -19,36 +19,68 @@ import csce.uark.edu.rynolan.models.Rushee;
 public class RegistrationController {
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public boolean registerRushee(@RequestBody(required=true) Rushee rushee) {
+	public ResultMessage registerRushee(@RequestBody(required=true) Rushee rushee) {
 		try {
 			JdbcConfiguration config = new JdbcConfiguration();
 			Connection conn = config.dataSource();
 			
 			String queryString = "INSERT INTO rusheeInfo " + 
-				     "(id, firstName, lastName, email, createdOn)" +
+				     "(id, firstName, lastName, classYear, email, createdOn)" +
 				     " VALUES " +
-				     "(default, ?, ?, ?, localtimestamp)";
+				     "(default, ?, ?, ?, ?, localtimestamp)";
 			
 			PreparedStatement ps = conn.prepareStatement(queryString);
 			if(!rushee.getFirstName().matches("[a-zA-Z]+") || !rushee.getLastName().matches("[a-zA-Z]+")) {
 				System.out.println("Invalid Name");
-				return false;
+				return new ResultMessage(400,"Invalid Name");
 			}
 			ps.setString(1, rushee.getFirstName());
 			ps.setString(2, rushee.getLastName());
-			ps.setString(3, rushee.getEmail());
+			ps.setString(3, rushee.getUniversityYear());
+			ps.setString(4, rushee.getEmail());
 			
-			ResultSet rs = ps.executeQuery();
-			rs.close();
+			ps.executeUpdate();
+			
 			ps.close();
 			config.closeDataSource(conn);
-			return true;
+			return new ResultMessage(200, "Added Successfully!");
 		}
 		catch(URISyntaxException e) {
-			return false;
+			e.printStackTrace();
+			return  new ResultMessage(400,"URI Error");
 		}
 		catch(SQLException e) {
-			return false;
+			e.printStackTrace();
+			return  new ResultMessage(400,"SQL Error");
+		}
+	}
+	
+	private class ResultMessage {
+		private int resultCode;
+		private String resultMessage;
+		
+		public ResultMessage() {}
+		
+		public ResultMessage(int resultCode, String resultMessage) {
+			super();
+			this.resultCode = resultCode;
+			this.resultMessage = resultMessage;
+		}
+
+		public int getResultCode() {
+			return resultCode;
+		}
+
+		public void setResultCode(int resultCode) {
+			this.resultCode = resultCode;
+		}
+
+		public String getResultMessage() {
+			return resultMessage;
+		}
+
+		public void setResultMessage(String resultMessage) {
+			this.resultMessage = resultMessage;
 		}
 	}
 }

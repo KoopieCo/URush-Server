@@ -19,6 +19,8 @@ public class Rushee {
 		this.setTimestamp(timestamp);
 	}
 	
+	public Rushee() {}
+	
 	public int getId() {
 		return id;
 	}

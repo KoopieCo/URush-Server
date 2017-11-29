@@ -1,18 +1,22 @@
 package csce.uark.edu.rynolan.models;
 
+import java.sql.Timestamp;
+
 public class Rushee {
 	private int id;
 	private String firstName, lastName;
 	private String universityYear;
 	private String email;
+	private Timestamp timestamp;
 	
-	public Rushee(int id, String firstName, String lastName, String universityYear, String email) {
+	public Rushee(int id, String firstName, String lastName, String universityYear, String email, Timestamp timestamp) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.universityYear = universityYear;
 		this.email = email;
+		this.setTimestamp(timestamp);
 	}
 	
 	public int getId() {
@@ -44,6 +48,14 @@ public class Rushee {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +19,7 @@ import csce.uark.edu.rynolan.models.Rushee;
 public class RegistrationController {
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public boolean registerRushee(@RequestParam(name = "info", required=true) Rushee rushee) {
+	public boolean registerRushee(@RequestBody(required=true) Rushee rushee) {
 		try {
 			JdbcConfiguration config = new JdbcConfiguration();
 			Connection conn = config.dataSource();

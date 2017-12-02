@@ -19,7 +19,7 @@ import csce.uark.edu.rynolan.models.Rushee;
 public class RegistrationController {
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ResultMessage registerRushee(@RequestBody(required=true) Rushee rushee) {
+	public Rushee registerRushee(@RequestBody(required=true) Rushee rushee) {
 		try {
 			JdbcConfiguration config = new JdbcConfiguration();
 			Connection conn = config.dataSource();
@@ -32,7 +32,7 @@ public class RegistrationController {
 			PreparedStatement ps = conn.prepareStatement(queryString);
 			if(!rushee.getFirstName().matches("[a-zA-Z]+") || !rushee.getLastName().matches("[a-zA-Z]+")) {
 				System.out.println("Invalid Name");
-				return new ResultMessage(400,"Invalid Name");
+				return null;
 			}
 			ps.setString(1, rushee.getFirstName());
 			ps.setString(2, rushee.getLastName());
@@ -43,44 +43,15 @@ public class RegistrationController {
 			
 			ps.close();
 			config.closeDataSource(conn);
-			return new ResultMessage(200, "Added Successfully!");
+			return rushee;
 		}
 		catch(URISyntaxException e) {
 			e.printStackTrace();
-			return  new ResultMessage(400,"URI Error");
+			return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			return  new ResultMessage(400,"SQL Error");
-		}
-	}
-	
-	private class ResultMessage {
-		private int resultCode;
-		private String resultMessage;
-		
-		public ResultMessage() {}
-		
-		public ResultMessage(int resultCode, String resultMessage) {
-			super();
-			this.resultCode = resultCode;
-			this.resultMessage = resultMessage;
-		}
-
-		public int getResultCode() {
-			return resultCode;
-		}
-
-		public void setResultCode(int resultCode) {
-			this.resultCode = resultCode;
-		}
-
-		public String getResultMessage() {
-			return resultMessage;
-		}
-
-		public void setResultMessage(String resultMessage) {
-			this.resultMessage = resultMessage;
+			return null;
 		}
 	}
 }

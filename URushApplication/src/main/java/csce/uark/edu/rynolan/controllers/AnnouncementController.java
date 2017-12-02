@@ -46,7 +46,7 @@ public class AnnouncementController {
 				Announcement temp = new Announcement();
 				temp.setEventTitle(rs.getString(1));
 				temp.setEventLocation(rs.getString(2));
-				temp.setEventTime(rs.getTimestamp(3).toString());
+				temp.setEventTime(rs.getTimestamp(3).toLocalDateTime().toString());
 				
 				announcementList.add(temp);
 			}
